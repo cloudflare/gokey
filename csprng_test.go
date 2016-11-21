@@ -2,8 +2,6 @@ package gokey
 
 import (
 	"bytes"
-	"crypto/aes"
-	"encoding/binary"
 	"io"
 	"testing"
 )
