@@ -11,34 +11,7 @@ import (
 	"io"
 )
 
-func GetPass(password, realm string, seed []byte, spec *PasswordSpec) (string, error) {
-	var rng io.Reader
-	var err error
-
-	if seed == nil {
-		rng = NewDRNG(password, realm)
-	} else {
-		rng, err = NewDRNGwithSeed(password, realm, seed)
-		if err != nil {
-			return "", err
-		}
-	}
-
-	gen := &KeyGen{rng}
-	return gen.GeneratePassword(spec)
-}
-
-func GetKey(password, realm string, seed []byte, keyType int, allowUnsafe bool) (crypto.PrivateKey, error) {
-	rng, err := GetRaw(password, realm, seed, allowUnsafe)
-	if err != nil {
-		return nil, err
-	}
-
-	gen := &KeyGen{rng}
-	return gen.GenerateKey(keyType)
-}
-
-func GetRaw(password, realm string, seed []byte, allowUnsafe bool) (io.Reader, error) {
+func getReader(password, realm string, seed []byte, allowUnsafe bool) (io.Reader, error) {
 	var rng io.Reader
 	var err error
 
@@ -51,6 +24,35 @@ func GetRaw(password, realm string, seed []byte, allowUnsafe bool) (io.Reader, e
 		rng = NewDRNG(password, realm)
 	} else {
 		return nil, errors.New("generating keys without strong seed is not allowed")
+	}
+
+	return rng, nil
+}
+
+func GetPass(password, realm string, seed []byte, spec *PasswordSpec) (string, error) {
+	rng, err := getReader(password, realm+"-pass", seed, true)
+	if err != nil {
+		return "", err
+	}
+
+	gen := &KeyGen{rng}
+	return gen.GeneratePassword(spec)
+}
+
+func GetKey(password, realm string, seed []byte, keyType int, allowUnsafe bool) (crypto.PrivateKey, error) {
+	rng, err := getReader(password, realm+fmt.Sprintf("-key(%v)", keyType), seed, allowUnsafe)
+	if err != nil {
+		return nil, err
+	}
+
+	gen := &KeyGen{rng}
+	return gen.GenerateKey(keyType)
+}
+
+func GetRaw(password, realm string, seed []byte, allowUnsafe bool) (io.Reader, error) {
+	rng, err := getReader(password, realm+"-raw", seed, allowUnsafe)
+	if err != nil {
+		return nil, err
 	}
 
 	return rng, nil
