@@ -28,11 +28,11 @@ func init() {
 	flag.BoolVar(&unsafe, "u", false, "UNSAFE: allow key generation without a seed")
 }
 
-var keyTypes = map[string]int{
-	"ec256":   gokey.KEYTYPE_EC256,
-	"ec521":   gokey.KEYTYPE_EC521,
-	"rsa2048": gokey.KEYTYPE_RSA2048,
-	"rsa4096": gokey.KEYTYPE_RSA4096,
+var keyTypes = map[string]gokey.KeyType{
+	"ec256":   gokey.EC256,
+	"ec521":   gokey.EC521,
+	"rsa2048": gokey.RSA2048,
+	"rsa4096": gokey.RSA4096,
 }
 
 func genSeed(w io.Writer) {

@@ -39,14 +39,14 @@ func GetPass(password, realm string, seed []byte, spec *PasswordSpec) (string, e
 	return gen.GeneratePassword(spec)
 }
 
-func GetKey(password, realm string, seed []byte, keyType int, allowUnsafe bool) (crypto.PrivateKey, error) {
-	rng, err := getReader(password, realm+fmt.Sprintf("-key(%v)", keyType), seed, allowUnsafe)
+func GetKey(password, realm string, seed []byte, kt KeyType, allowUnsafe bool) (crypto.PrivateKey, error) {
+	rng, err := getReader(password, realm+fmt.Sprintf("-key(%v)", kt), seed, allowUnsafe)
 	if err != nil {
 		return nil, err
 	}
 
 	gen := &KeyGen{rng}
-	return gen.GenerateKey(keyType)
+	return gen.GenerateKey(kt)
 }
 
 func GetRaw(password, realm string, seed []byte, allowUnsafe bool) (io.Reader, error) {

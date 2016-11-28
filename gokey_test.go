@@ -89,7 +89,7 @@ func keyToBytes(key crypto.PrivateKey, t *testing.T) []byte {
 	return buf.Bytes()
 }
 
-func testGetKeyType(keyType int, t *testing.T) {
+func testGetKeyType(kt KeyType, t *testing.T) {
 	pass1Seed1, err := GenerateEncryptedKeySeed("pass1")
 	if err != nil {
 		t.Fatal(err)
@@ -100,17 +100,17 @@ func testGetKeyType(keyType int, t *testing.T) {
 		t.Fatal(err)
 	}
 
-	key1Example1, err := GetKey("pass1", "example.com", nil, keyType, true)
+	key1Example1, err := GetKey("pass1", "example.com", nil, kt, true)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	key1Example2, err := GetKey("pass1", "example2.com", nil, keyType, true)
+	key1Example2, err := GetKey("pass1", "example2.com", nil, kt, true)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	key2Example1, err := GetKey("pass2", "example.com", nil, keyType, true)
+	key2Example1, err := GetKey("pass2", "example.com", nil, kt, true)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -123,12 +123,12 @@ func testGetKeyType(keyType int, t *testing.T) {
 		t.Fatal("keys match for different master passwords")
 	}
 
-	key1Example1Seed1, err := GetKey("pass1", "example.com", pass1Seed1, keyType, false)
+	key1Example1Seed1, err := GetKey("pass1", "example.com", pass1Seed1, kt, false)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	key1Example1Seed2, err := GetKey("pass1", "example.com", pass1Seed2, keyType, false)
+	key1Example1Seed2, err := GetKey("pass1", "example.com", pass1Seed2, kt, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -141,12 +141,12 @@ func testGetKeyType(keyType int, t *testing.T) {
 		t.Fatal("keys match for different seeds")
 	}
 
-	key1Example1Retry, err := GetKey("pass1", "example.com", nil, keyType, true)
+	key1Example1Retry, err := GetKey("pass1", "example.com", nil, kt, true)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	key1Example1Seed1Retry, err := GetKey("pass1", "example.com", pass1Seed1, keyType, false)
+	key1Example1Seed1Retry, err := GetKey("pass1", "example.com", pass1Seed1, kt, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -157,14 +157,14 @@ func testGetKeyType(keyType int, t *testing.T) {
 }
 
 func TestGetKey(t *testing.T) {
-	testGetKeyType(KEYTYPE_EC256, t)
-	testGetKeyType(KEYTYPE_EC521, t)
-	testGetKeyType(KEYTYPE_RSA2048, t)
-	testGetKeyType(KEYTYPE_RSA4096, t)
+	testGetKeyType(EC256, t)
+	testGetKeyType(EC521, t)
+	testGetKeyType(RSA2048, t)
+	testGetKeyType(RSA4096, t)
 }
 
 func TestGetKeyUnsafe(t *testing.T) {
-	_, err := GetKey("pass1", "example.com", nil, KEYTYPE_EC256, false)
+	_, err := GetKey("pass1", "example.com", nil, EC256, false)
 	if err == nil {
 		t.Fatal("allowed unsafe key generation")
 	}
