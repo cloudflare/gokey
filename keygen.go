@@ -11,12 +11,16 @@ import (
 	"unicode"
 )
 
+type KeyType int
+
 const (
-	KEYTYPE_EC256 = iota
-	KEYTYPE_EC521
-	KEYTYPE_RSA2048
-	KEYTYPE_RSA4096
+	EC256 KeyType = iota
+	EC521
+	RSA2048
+	RSA4096
 )
+
+//go:generate stringer -type KeyType
 
 type KeyGen struct {
 	rng io.Reader
@@ -146,13 +150,13 @@ func (keygen *KeyGen) GeneratePassword(spec *PasswordSpec) (string, error) {
 	}
 }
 
-func (keygen *KeyGen) generateRsa(keyType int) (crypto.PrivateKey, error) {
+func (keygen *KeyGen) generateRsa(kt KeyType) (crypto.PrivateKey, error) {
 	bits := 0
 
-	switch keyType {
-	case KEYTYPE_RSA2048:
+	switch kt {
+	case RSA2048:
 		bits = 2048
-	case KEYTYPE_RSA4096:
+	case RSA4096:
 		bits = 4096
 	default:
 		return nil, errors.New("invalid RSA key size requested")
@@ -161,13 +165,13 @@ func (keygen *KeyGen) generateRsa(keyType int) (crypto.PrivateKey, error) {
 	return rsa.GenerateKey(keygen.rng, bits)
 }
 
-func (keygen *KeyGen) generateEc(keyType int) (crypto.PrivateKey, error) {
+func (keygen *KeyGen) generateEc(kt KeyType) (crypto.PrivateKey, error) {
 	var curve elliptic.Curve
 
-	switch keyType {
-	case KEYTYPE_EC256:
+	switch kt {
+	case EC256:
 		curve = elliptic.P256()
-	case KEYTYPE_EC521:
+	case EC521:
 		curve = elliptic.P521()
 	default:
 		return nil, errors.New("invalid EC key size requested")
@@ -176,12 +180,12 @@ func (keygen *KeyGen) generateEc(keyType int) (crypto.PrivateKey, error) {
 	return ecdsa.GenerateKey(curve, keygen.rng)
 }
 
-func (keygen *KeyGen) GenerateKey(keyType int) (crypto.PrivateKey, error) {
-	switch keyType {
-	case KEYTYPE_EC256, KEYTYPE_EC521:
-		return keygen.generateEc(keyType)
-	case KEYTYPE_RSA2048, KEYTYPE_RSA4096:
-		return keygen.generateRsa(keyType)
+func (keygen *KeyGen) GenerateKey(kt KeyType) (crypto.PrivateKey, error) {
+	switch kt {
+	case EC256, EC521:
+		return keygen.generateEc(kt)
+	case RSA2048, RSA4096:
+		return keygen.generateRsa(kt)
 	}
 
 	return nil, errors.New("invalid key type requested")
