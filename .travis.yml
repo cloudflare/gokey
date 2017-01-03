@@ -1,0 +1,3 @@
+language: go
+
+go_import_path: github.com/cloudflare/gokey
