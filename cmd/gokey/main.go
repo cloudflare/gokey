@@ -2,14 +2,17 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
 	"os"
+	"syscall"
 
 	"github.com/cloudflare/gokey"
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 var (
@@ -19,7 +22,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&pass, "p", "", "master password")
+	flag.StringVar(&pass, "p", "", "master password (if not specified, will be asked interactively)")
 	flag.StringVar(&keyType, "t", "pass", "output type (can be pass, seed, raw, ec256, ec521, rsa2048, rsa4096)")
 	flag.StringVar(&seedPath, "s", "", "path to master seed file (optional)")
 	flag.IntVar(&seedSkipCount, "skip", 0, "number of bytes to skip from master seed file (default 0)")
@@ -96,12 +99,39 @@ func logFatal(format string, args ...interface{}) {
 func main() {
 	flag.Parse()
 
+	var err error
 	if pass == "" {
-		logFatal("no password provided")
+		var passBytes []byte
+		var passBytesAgain []byte
+		for {
+			for len(passBytes) == 0 {
+				fmt.Print("Master password: ")
+				passBytes, err = terminal.ReadPassword(syscall.Stdin)
+				if err != nil {
+					log.Fatalln(err)
+				}
+				fmt.Println("")
+			}
+
+			fmt.Print("Master password again: ")
+			passBytesAgain, err = terminal.ReadPassword(syscall.Stdin)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			fmt.Println("")
+			if bytes.Equal(passBytes, passBytesAgain) {
+				break
+			} else {
+				fmt.Println("Passwords do not match. Try again.")
+				passBytes = nil
+				continue
+			}
+		}
+
+		pass = string(passBytes)
 	}
 
 	out := os.Stdout
-	var err error
 	if output != "" {
 		out, err = os.OpenFile(output, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
 		if err != nil {
