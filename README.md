@@ -29,6 +29,13 @@ Supported password/key types:
   * `rsa2048` - generates 2048-bit RSA private key
   * `rsa4096` - generates 4096-bit RSA private key
 
+### Installation
+**gokey** command-line utility can be downloaded and compiled using standard `go get` approach. Assuming you have [Go](https://golang.org/doc/install) installed and `$GOPATH` set, just do
+```
+go get github.com/cloudflare/gokey/cmd/gokey
+```
+The `gokey` binary should appear in your `$GOPATH/bin` directory.
+
 ### Modes of operation
 **gokey** can generate passwords and cryptographic private keys (ECC and RSA keys are currently supported). However, without any additional options specified it uses your master password as a single source of entropy for generated data. For passwords it is acceptable most of the time, but keys usually have much higher entropy requirements.
 
