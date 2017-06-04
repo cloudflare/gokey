@@ -16,9 +16,9 @@ import (
 )
 
 var (
-	pass, keyType, seedPath, realm, output string
-	unsafe                                 bool
-	seedSkipCount                          int
+	pass, keyType, seedPath, realm, usr, output string
+	unsafe                                      bool
+	seedSkipCount                               int
 )
 
 func init() {
@@ -27,6 +27,7 @@ func init() {
 	flag.StringVar(&seedPath, "s", "", "path to master seed file (optional)")
 	flag.IntVar(&seedSkipCount, "skip", 0, "number of bytes to skip from master seed file (default 0)")
 	flag.StringVar(&realm, "r", "", "password/key realm (most probably purpose of the password/key)")
+	flag.StringVar(&usr, "usr", "", "user for the realm (optional)")
 	flag.StringVar(&output, "o", "", "output path to store generated key/password (default stdout)")
 	flag.BoolVar(&unsafe, "u", false, "UNSAFE: allow key generation without a seed")
 }
@@ -98,6 +99,10 @@ func logFatal(format string, args ...interface{}) {
 
 func main() {
 	flag.Parse()
+
+	if usr != "" {
+		realm = usr + ":" + realm
+	}
 
 	var err error
 	if pass == "" {

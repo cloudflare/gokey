@@ -17,6 +17,7 @@ gokey -p super-secret-master-password -r example.com
   - `-r <password/key realm>` - any string which identifies requested password/key, most likely key usage or resource URL
   - `-s <path to seed file>` - needed, if you want to use seed file instead of master password as an entropy source (see [Modes of operation](#modes-of-operation) below); can be generated with `-t seed` flag as described below
   - `-skip <number of bytes>` - number of bytes to skip when reading seed file
+  - `-usr` - user for the realm
   - `-u` - **UNSAFE**, allow generating keys without using a seed file (see [Modes of operation](#modes-of-operation) below)
   - `-t <password/key type>` - requested password/key output type
 
@@ -53,6 +54,11 @@ If you need a password for a different resource, (`example2.com`), you would cha
 ```
 gokey -p super-secret-master-password -r example2.com
 ```
+
+And if you want to involve the username in the password generation process
+```
+gokey -p super-secret-master-password -r example2.com -usr handle
+```
 This way you need to remember only your master password and you can always recreate passwords for your services/resources.
 
 NOTE: In this mode generated passwords are as strong as your master password, so do have your master password strong enough. You can also derive private keys from your master password, but keep in mind, that these keys will have low entropy. That is why it is considered unsafe, so **gokey** does not allow it by default. If you're **_really_** know what you are doing, you can override this default by supplying `-u` flag.
@@ -71,4 +77,4 @@ Then, to generate EC-256 private key for `example.com`, use
 gokey -p super-secret-master-password -s seedfile -r example.com -t ec256
 ```
 
-NOTE: you still need to remember your master password and keep a backup copy of your seed file. If you forget your master password or loose your seed file, you loose all derived passwords/keys as well.
+NOTE: you still need to remember your master password, (possibly the username too) and keep a backup copy of your seed file. If you forget your master password, username or loose your seed file, you loose all derived passwords/keys as well.
