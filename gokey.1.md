@@ -61,6 +61,8 @@ operation* below)
     * *ec521* - generates ECC P-521 private key
     * *rsa2048* - generates 2048-bit RSA private key
     * *rsa4096* - generates 4096-bit RSA private key
+    * *x25519* - generates x25519 (also known as curve25519) ECC private key
+    * *ed25519* - generates ed25519 ECC private key
 
 # MODES OF OPERATION
 

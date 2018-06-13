@@ -23,7 +23,7 @@ var (
 
 func init() {
 	flag.StringVar(&pass, "p", "", "master password (if not specified, will be asked interactively)")
-	flag.StringVar(&keyType, "t", "pass", "output type (can be pass, seed, raw, ec256, ec521, rsa2048, rsa4096)")
+	flag.StringVar(&keyType, "t", "pass", "output type (can be pass, seed, raw, ec256, ec521, rsa2048, rsa4096, x25519, ed25519)")
 	flag.StringVar(&seedPath, "s", "", "path to master seed file (optional)")
 	flag.IntVar(&seedSkipCount, "skip", 0, "number of bytes to skip from master seed file (default 0)")
 	flag.StringVar(&realm, "r", "", "password/key realm (most probably purpose of the password/key)")
@@ -36,6 +36,8 @@ var keyTypes = map[string]gokey.KeyType{
 	"ec521":   gokey.EC521,
 	"rsa2048": gokey.RSA2048,
 	"rsa4096": gokey.RSA4096,
+	"x25519":  gokey.X25519,
+	"ed25519": gokey.ED25519,
 }
 
 func genSeed(w io.Writer) {
