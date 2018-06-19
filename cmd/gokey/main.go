@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 	"syscall"
 
 	"github.com/cloudflare/gokey"
@@ -16,13 +17,14 @@ import (
 )
 
 var (
-	pass, keyType, seedPath, realm, output string
-	unsafe                                 bool
-	seedSkipCount                          int
+	pass, passFile, keyType, seedPath, realm, output string
+	unsafe                                           bool
+	seedSkipCount                                    int
 )
 
 func init() {
 	flag.StringVar(&pass, "p", "", "master password (if not specified, will be asked interactively)")
+	flag.StringVar(&passFile, "P", "", "master password file (if not specified, will be asked interactively)")
 	flag.StringVar(&keyType, "t", "pass", "output type (can be pass, seed, raw, ec256, ec521, rsa2048, rsa4096, x25519, ed25519)")
 	flag.StringVar(&seedPath, "s", "", "path to master seed file (optional)")
 	flag.IntVar(&seedSkipCount, "skip", 0, "number of bytes to skip from master seed file (default 0)")
@@ -102,6 +104,14 @@ func main() {
 	flag.Parse()
 
 	var err error
+	if pass == "" && passFile != "" {
+		var content []byte
+		content, err = ioutil.ReadFile(passFile)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		pass = strings.TrimSpace(string(content[:]))
+	}
 	if pass == "" {
 		var passBytes []byte
 		var passBytesAgain []byte

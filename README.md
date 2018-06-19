@@ -13,7 +13,8 @@ gokey -p super-secret-master-password -r example.com
 ###### options
 
   - `-o <output path>` - by default **gokey** outputs generated data to `stdout`
-  - `-p <master password>` - master password which will be used to generate other passwords/keys or to encrypt seed file (see [Modes of operation](#modes-of-operation) below, if not provided, **gokey** will ask for it interactively)
+  - `-P </path/to/password>` - path to master password file which will be used to generate other passwords/keys or to encrypt seed file (see [Modes of operation](#modes-of-operation) below, if no master password or master password file is provided, **gokey** will ask for it interactively)
+  - `-p <master password>` - master password which will be used to generate other passwords/keys or to encrypt seed file (see [Modes of operation](#modes-of-operation) below, if no master password or master password file is provided, **gokey** will ask for it interactively)
   - `-r <password/key realm>` - any string which identifies requested password/key, most likely key usage or resource URL
   - `-s <path to seed file>` - needed, if you want to use seed file instead of master password as an entropy source (see [Modes of operation](#modes-of-operation) below); can be generated with `-t seed` flag as described below
   - `-skip <number of bytes>` - number of bytes to skip when reading seed file
