@@ -9,6 +9,8 @@ import (
 	"io"
 	"strings"
 	"unicode"
+
+	"golang.org/x/crypto/ed25519"
 )
 
 type KeyType int
@@ -18,6 +20,8 @@ const (
 	EC521
 	RSA2048
 	RSA4096
+	X25519
+	ED25519
 )
 
 //go:generate stringer -type KeyType
@@ -180,12 +184,34 @@ func (keygen *KeyGen) generateEc(kt KeyType) (crypto.PrivateKey, error) {
 	return ecdsa.GenerateKey(curve, keygen.rng)
 }
 
+func (keygen *KeyGen) generate25519(kt KeyType) (crypto.PrivateKey, error) {
+	switch kt {
+	case X25519:
+		var privKey [32]byte
+		_, err := io.ReadFull(keygen.rng, privKey[:])
+
+		// from https://cr.yp.to/ecdh.html
+		privKey[0] &= 248
+		privKey[31] &= 127
+		privKey[31] |= 64
+
+		return x25519PrivateKey(privKey[:]), err
+	case ED25519:
+		_, privKey, err := ed25519.GenerateKey(keygen.rng)
+		return &privKey, err
+	}
+
+	return nil, errors.New("invalid key type requested")
+}
+
 func (keygen *KeyGen) GenerateKey(kt KeyType) (crypto.PrivateKey, error) {
 	switch kt {
 	case EC256, EC521:
 		return keygen.generateEc(kt)
 	case RSA2048, RSA4096:
 		return keygen.generateRsa(kt)
+	case X25519, ED25519:
+		return keygen.generate25519(kt)
 	}
 
 	return nil, errors.New("invalid key type requested")
