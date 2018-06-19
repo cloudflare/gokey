@@ -30,10 +30,16 @@ immediately anywhere.
 **-o** *output_path*
 :    by default **gokey** outputs generated data to *stdout*
 
+**-P** */path/to/password*
+:    path to master password file which will be used to generate other
+passwords/keys or to encrypt seed file (see *Modes of operation* below, if no
+master password or master password file is provided, **gokey** will ask for it
+interactively)
+
 **-p** *master_password*
 :    master password which will be used to generate other passwords/keys or to
-encrypt seed file (see *Modes of operation* below, if not provided, **gokey**
-will ask for it interactively)
+encrypt seed file (see *Modes of operation* below, if no master password or
+master password file is provided, **gokey** will ask for it interactively)
 
 **-r** *password/key_realm*
 :    any string which identifies requested password/key, most likely key usage
