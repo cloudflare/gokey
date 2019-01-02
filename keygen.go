@@ -4,12 +4,12 @@ import (
 	"crypto"
 	"crypto/ecdsa"
 	"crypto/elliptic"
-	"crypto/rsa"
 	"errors"
 	"io"
 	"strings"
 	"unicode"
 
+	deterministicRsaKeygen "github.com/cloudflare/gokey/rsa"
 	"golang.org/x/crypto/ed25519"
 )
 
@@ -166,7 +166,7 @@ func (keygen *KeyGen) generateRsa(kt KeyType) (crypto.PrivateKey, error) {
 		return nil, errors.New("invalid RSA key size requested")
 	}
 
-	return rsa.GenerateKey(keygen.rng, bits)
+	return deterministicRsaKeygen.GenerateKey(keygen.rng, bits)
 }
 
 func (keygen *KeyGen) generateEc(kt KeyType) (crypto.PrivateKey, error) {
