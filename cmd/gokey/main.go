@@ -125,6 +125,10 @@ func main() {
 				fmt.Println("")
 			}
 
+			if seedPath != "" {
+				break
+			}
+
 			fmt.Print("Master password again: ")
 			passBytesAgain, err = terminal.ReadPassword(syscall.Stdin)
 			if err != nil {
