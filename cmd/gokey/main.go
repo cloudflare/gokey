@@ -10,7 +10,6 @@ import (
 	"log"
 	"os"
 	"strings"
-	"syscall"
 
 	"github.com/cloudflare/gokey"
 	"golang.org/x/crypto/ssh/terminal"
@@ -118,7 +117,7 @@ func main() {
 		for {
 			for len(passBytes) == 0 {
 				fmt.Print("Master password: ")
-				passBytes, err = terminal.ReadPassword(syscall.Stdin)
+				passBytes, err = terminal.ReadPassword(int(os.Stdin.Fd()))
 				if err != nil {
 					log.Fatalln(err)
 				}
@@ -130,7 +129,7 @@ func main() {
 			}
 
 			fmt.Print("Master password again: ")
-			passBytesAgain, err = terminal.ReadPassword(syscall.Stdin)
+			passBytesAgain, err = terminal.ReadPassword(int(os.Stdin.Fd()))
 			if err != nil {
 				log.Fatalln(err)
 			}
