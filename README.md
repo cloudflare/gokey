@@ -21,6 +21,7 @@ gokey -p super-secret-master-password -r example.com
   - `-skip <number of bytes>` - number of bytes to skip when reading seed file
   - `-u` - **UNSAFE**, allow generating keys without using a seed file (see [Modes of operation](#modes-of-operation) below)
   - `-t <password/key type>` - requested password/key output type
+  - `-l <length>` - number of characters in the generated password or number of bytes in the generated raw stream (default 10 for "pass" type and 32 for "raw" type)
 
 Supported password/key types:
   * `pass` - default, generates a password
