@@ -70,6 +70,10 @@ operation* below)
     * *x25519* - generates x25519 (also known as curve25519) ECC private key
     * *ed25519* - generates ed25519 ECC private key
 
+**-l** *length*
+:   number of characters in the generated password or number of bytes in the
+generated raw stream (default 10 for "pass" type and 32 for "raw" type)
+
 # MODES OF OPERATION
 
 **gokey** can generate passwords and cryptographic private keys (ECC and RSA
