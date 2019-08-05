@@ -18,7 +18,7 @@ import (
 var (
 	pass, passFile, keyType, seedPath, realm, output string
 	unsafe                                           bool
-	seedSkipCount                                    int
+	seedSkipCount, length                            int
 )
 
 func init() {
@@ -30,6 +30,7 @@ func init() {
 	flag.StringVar(&realm, "r", "", "password/key realm (most probably purpose of the password/key)")
 	flag.StringVar(&output, "o", "", "output path to store generated key/password (default stdout)")
 	flag.BoolVar(&unsafe, "u", false, "UNSAFE: allow key generation without a seed")
+	flag.IntVar(&length, "l", 10, `number of characters in the generated password or number of bytes in the generated raw stream (default 10 for "pass" type and 32 for "raw" type)`)
 }
 
 var keyTypes = map[string]gokey.KeyType{
@@ -54,7 +55,7 @@ func genSeed(w io.Writer) {
 }
 
 func genPass(seed []byte, w io.Writer) {
-	password, err := gokey.GetPass(pass, realm, seed, &gokey.PasswordSpec{10, 3, 3, 1, 1, ""})
+	password, err := gokey.GetPass(pass, realm, seed, &gokey.PasswordSpec{length, 3, 3, 1, 1, ""})
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -79,18 +80,26 @@ func genKey(seed []byte, w io.Writer) {
 	}
 }
 
-// TODO: parametrize size
-// generates raw 32 bytes
 func genRaw(seed []byte, w io.Writer) {
 	raw, err := gokey.GetRaw(pass, realm, seed, unsafe)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	_, err = io.CopyN(w, raw, 32)
+	_, err = io.CopyN(w, raw, int64(length))
 	if err != nil {
 		log.Fatalln(err)
 	}
+}
+
+func isFlagSet(name string) bool {
+	found := false
+	flag.Visit(func(f *flag.Flag) {
+		if f.Name == name {
+			found = true
+		}
+	})
+	return found
 }
 
 func logFatal(format string, args ...interface{}) {
@@ -177,12 +186,24 @@ func main() {
 
 		switch keyType {
 		case "pass":
+			if length <= 0 {
+				logFatal("invalid length parameter")
+			}
 			genPass(seed, out)
 		case "raw":
+			if !isFlagSet("l") {
+				length = 32
+			}
+			if length <= 0 {
+				logFatal("invalid length parameter")
+			}
 			genRaw(seed, out)
 		default:
 			if _, ok := keyTypes[keyType]; !ok {
 				logFatal("unknown key type: %v", keyType)
+			}
+			if isFlagSet("l") {
+				logFatal("key type %v does not support length parameter", keyType)
 			}
 			genKey(seed, out)
 		}
