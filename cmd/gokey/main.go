@@ -64,8 +64,6 @@ func genPass(seed []byte, w io.Writer) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-
-	fmt.Fprintln(w, "")
 }
 
 func genKey(seed []byte, w io.Writer) {
@@ -125,28 +123,28 @@ func main() {
 		var passBytesAgain []byte
 		for {
 			for len(passBytes) == 0 {
-				fmt.Print("Master password: ")
+				fmt.Fprint(os.Stderr, "Master password: ")
 				passBytes, err = terminal.ReadPassword(int(os.Stdin.Fd()))
 				if err != nil {
 					log.Fatalln(err)
 				}
-				fmt.Println("")
+				fmt.Fprintln(os.Stderr, "")
 			}
 
 			if seedPath != "" {
 				break
 			}
 
-			fmt.Print("Master password again: ")
+			fmt.Fprint(os.Stderr, "Master password again: ")
 			passBytesAgain, err = terminal.ReadPassword(int(os.Stdin.Fd()))
 			if err != nil {
 				log.Fatalln(err)
 			}
-			fmt.Println("")
+			fmt.Fprintln(os.Stderr, "")
 			if bytes.Equal(passBytes, passBytesAgain) {
 				break
 			} else {
-				fmt.Println("Passwords do not match. Try again.")
+				fmt.Fprintln(os.Stderr, "Passwords do not match. Try again.")
 				passBytes = nil
 				continue
 			}
@@ -190,6 +188,7 @@ func main() {
 				logFatal("invalid length parameter")
 			}
 			genPass(seed, out)
+			fmt.Fprintln(os.Stderr, "")
 		case "raw":
 			if !isFlagSet("l") {
 				length = 32
