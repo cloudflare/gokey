@@ -1,5 +1,9 @@
 language: go
 
+arch:
+  - amd64
+  - ppc64le
+
 os:
   - linux
   - windows
