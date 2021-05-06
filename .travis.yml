@@ -5,7 +5,7 @@ os:
   - windows
 
 go:
-  - "1.10.x"
+  - "1.15.x"
   - "1.x"
   - master
 
