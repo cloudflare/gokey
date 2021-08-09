@@ -17,6 +17,7 @@ type KeyType int
 
 const (
 	EC256 KeyType = iota
+	EC384
 	EC521
 	RSA2048
 	RSA4096
@@ -175,6 +176,8 @@ func (keygen *KeyGen) generateEc(kt KeyType) (crypto.PrivateKey, error) {
 	switch kt {
 	case EC256:
 		curve = elliptic.P256()
+	case EC384:
+		curve = elliptic.P384()
 	case EC521:
 		curve = elliptic.P521()
 	default:
@@ -206,7 +209,7 @@ func (keygen *KeyGen) generate25519(kt KeyType) (crypto.PrivateKey, error) {
 
 func (keygen *KeyGen) GenerateKey(kt KeyType) (crypto.PrivateKey, error) {
 	switch kt {
-	case EC256, EC521:
+	case EC256, EC384, EC521:
 		return keygen.generateEc(kt)
 	case RSA2048, RSA4096:
 		return keygen.generateRsa(kt)
