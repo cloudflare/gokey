@@ -28,6 +28,7 @@ Supported password/key types:
   * `seed` - generates a seed file, which can be used with `-s` option later
   * `raw` - generates 32 random bytes (can be used as a symmetric key)
   * `ec256` - generates ECC P-256 private key
+  * `ec384` - generates ECC P-384 private key
   * `ec521` - generates ECC P-521 private key
   * `rsa2048` - generates 2048-bit RSA private key
   * `rsa4096` - generates 4096-bit RSA private key

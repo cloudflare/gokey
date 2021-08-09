@@ -164,6 +164,7 @@ func testGetKeyType(kt KeyType, t *testing.T) {
 
 func TestGetKey(t *testing.T) {
 	testGetKeyType(EC256, t)
+	testGetKeyType(EC384, t)
 	testGetKeyType(EC521, t)
 	testGetKeyType(RSA2048, t)
 	testGetKeyType(RSA4096, t)
