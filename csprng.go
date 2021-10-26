@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	keySeedLength = 256
+	SeedSize = 256
 )
 
 type devZero struct{}
@@ -60,7 +60,7 @@ func NewDRNGwithSeed(password, realm string, seed []byte) (io.Reader, error) {
 }
 
 func GenerateEncryptedKeySeed(password string) ([]byte, error) {
-	seed := make([]byte, keySeedLength)
+	seed := make([]byte, SeedSize)
 
 	_, err := rand.Read(seed)
 	if err != nil {
