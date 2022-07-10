@@ -129,5 +129,5 @@ gokey -p super-secret-master-password -s seedfile -r example.com -t ec256
 ```
 
 NOTE: you still need to remember your master password and keep a backup copy of
-your seed file. If you forget your master password or loose your seed file, you
-loose all derived passwords/keys as well.
+your seed file. If you forget your master password or lose your seed file, you
+lose all derived passwords/keys as well.
