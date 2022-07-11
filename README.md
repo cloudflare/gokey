@@ -1,6 +1,6 @@
 # gokey
 
-[![Build Status](https://travis-ci.org/cloudflare/gokey.svg?branch=master)](https://travis-ci.org/cloudflare/gokey)
+![build](https://github.com/cloudflare/gokey/actions/workflows/ci.yml/badge.svg)
 [![Go Report Card](https://goreportcard.com/badge/github.com/cloudflare/gokey)](https://goreportcard.com/report/github.com/cloudflare/gokey)
 
 ## A simple vaultless password manager in Go
