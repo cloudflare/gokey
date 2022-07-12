@@ -10,11 +10,12 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
+        os: [ ubuntu-latest, macos-latest , windows-latest ]
         go: [ '1.13', '1.17', '>=1.18' ]
-    name: Test go${{ matrix.go }}
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.os }} - go${{ matrix.go }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
