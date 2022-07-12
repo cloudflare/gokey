@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	"github.com/cloudflare/gokey"
-	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/term"
 )
 
 var (
@@ -125,7 +125,7 @@ func main() {
 		for {
 			for len(passBytes) == 0 {
 				fmt.Fprint(os.Stderr, "Master password: ")
-				passBytes, err = terminal.ReadPassword(int(os.Stdin.Fd()))
+				passBytes, err = term.ReadPassword(int(os.Stdin.Fd()))
 				if err != nil {
 					log.Fatalln(err)
 				}
@@ -137,7 +137,7 @@ func main() {
 			}
 
 			fmt.Fprint(os.Stderr, "Master password again: ")
-			passBytesAgain, err = terminal.ReadPassword(int(os.Stdin.Fd()))
+			passBytesAgain, err = term.ReadPassword(int(os.Stdin.Fd()))
 			if err != nil {
 				log.Fatalln(err)
 			}
