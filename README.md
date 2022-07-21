@@ -8,7 +8,7 @@
 **gokey** is a password manager, which does not require a password vault.
 Instead of storing your passwords in a vault it derives your password on the
 fly from your master password and supplied _realm_ string (for example,
-resource URL). This way you do not have to manage, backup or sync your password
+resource URL). This way you do not have to manage, backup, or sync your password
 vault (or trust its management to a third party) as your passwords are
 available immediately anywhere.
 
@@ -71,7 +71,7 @@ The `gokey` binary should appear in your `$GOPATH/bin` directory. (Default
 **gokey** can generate passwords and cryptographic private keys (ECC and RSA
 keys are currently supported). However, without any additional options
 specified it uses your master password as a single source of entropy for
-generated data. For passwords it is acceptable most of the time, but keys
+generated data. For passwords, it is acceptable most of the time, but keys
 usually have much higher entropy requirements.
 
 For cases, where higher entropy is required for generated passwords/keys,
@@ -80,7 +80,7 @@ password as a source of entropy.
 
 #### Simple mode (without a seed file)
 
-In simple mode passwords are derived directly from your master password and the
+In simple mode, passwords are derived directly from your master password and the
 realm string. That is each unique combination of a master password and a realm
 string will produce a unique password.
 
