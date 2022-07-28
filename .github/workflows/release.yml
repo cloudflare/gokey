@@ -1,7 +1,6 @@
 name: Publish release binaries
 
 on:
-  workflow_dispatch:
   release:
     types:
       - published
@@ -10,7 +9,7 @@ jobs:
   publish:
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest , windows-latest ]
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.os }} - go${{ matrix.go }}
     steps:
