@@ -22,4 +22,7 @@ jobs:
       - name: Run go build
         run: go build ./cmd/gokey
       - name: Test
-        run: ls gokey*
+        if: runner.os == 'Linux'
+        run: |
+          mv gokey gokey-${{ github.ref_name }}-linux-amd64
+          ls gokey*
