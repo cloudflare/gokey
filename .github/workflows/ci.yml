@@ -21,9 +21,10 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ matrix.go }}
-      
+      - name: Test gofmt
+        if: runner.os == 'Linux'
+        run: test -z "$(gofmt -l .)"
       - name: Run go test
         run: go test ./...
-      
       - name: Run go build
         run: go build ./cmd/gokey
