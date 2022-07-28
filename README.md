@@ -66,6 +66,8 @@ go install github.com/cloudflare/gokey/cmd/gokey@latest
 The `gokey` binary should appear in your `$GOPATH/bin` directory. (Default
 `$HOME/go/bin`)
 
+Precompiled binaries are also available in the [Releases section](https://github.com/cloudflare/gokey/releases)
+
 ### Modes of operation
 
 **gokey** can generate passwords and cryptographic private keys (ECC and RSA
