@@ -1,0 +1,23 @@
+name: Publish release binaries
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest , windows-latest ]
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.os }} - go${{ matrix.go }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.18'
+          check-latest: true
+      
+      - name: Run go build
+        run: go build ./cmd/gokey
