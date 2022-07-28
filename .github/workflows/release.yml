@@ -36,7 +36,7 @@ jobs:
           ls
           mv gokey-amd64 gokey-${{ github.ref_name }}-linux-amd64
           mv gokey-arm64 gokey-${{ github.ref_name }}-linux-arm64
-          gh release upload ${{ github.ref_name }} gokey-${{ github.ref_name }}-linux-amd64 gokey-arm64 gokey-${{ github.ref_name }}-linux-arm64
+          gh release upload ${{ github.ref_name }} gokey-${{ github.ref_name }}-linux-amd64 gokey-${{ github.ref_name }}-linux-arm64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload Windows binary
