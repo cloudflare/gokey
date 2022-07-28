@@ -18,7 +18,7 @@ const (
 type devZero struct{}
 
 func (dz devZero) Read(p []byte) (n int, err error) {
-	for i, := range p {
+	for i := range p {
 		p[i] = 0
 	}
 	return len(p), nil
