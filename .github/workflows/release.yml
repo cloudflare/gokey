@@ -33,6 +33,7 @@ jobs:
       - name: Upload Linux binary
         if: runner.os == 'Linux'
         run: |
+          ls
           mv gokey-amd64 gokey-${{ github.ref_name }}-linux-amd64
           mv gokey-arm64 gokey-${{ github.ref_name }}-linux-arm64
           gh release upload ${{ github.ref_name }} gokey-${{ github.ref_name }}-linux-amd64 gokey-arm64 gokey-${{ github.ref_name }}-linux-arm64
