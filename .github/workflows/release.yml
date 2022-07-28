@@ -2,9 +2,9 @@ name: Publish release binaries
 
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - 'v*'
+  release:
+    types:
+      - published
 
 jobs:
   publish:
@@ -25,4 +25,6 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           mv gokey gokey-${{ github.ref_name }}-linux-amd64
-          ls gokey*
+          gh release upload ${{ github.ref_name }} gokey-${{ github.ref_name }}-linux-amd64
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
