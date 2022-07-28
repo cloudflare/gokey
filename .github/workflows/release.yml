@@ -21,10 +21,24 @@ jobs:
           check-latest: true
       - name: Run go build
         run: go build ./cmd/gokey
-      - name: Test
+      - name: Upload Linux binary
         if: runner.os == 'Linux'
         run: |
           mv gokey gokey-${{ github.ref_name }}-linux-amd64
           gh release upload ${{ github.ref_name }} gokey-${{ github.ref_name }}-linux-amd64
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Windows binary
+        if: runner.os == 'Windows'
+        run: |
+          mv gokey.exe gokey-${{ github.ref_name }}-windows-amd64.exe
+          gh release upload ${{ github.ref_name }} gokey-${{ github.ref_name }}-windows-amd64.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload MacOS binary
+        if: runner.os == 'macOS'
+        run: |
+          mv gokey gokey-${{ github.ref_name }}-darwin-amd64
+          gh release upload ${{ github.ref_name }} gokey-${{ github.ref_name }}-darwin-amd64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
