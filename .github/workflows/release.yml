@@ -19,26 +19,38 @@ jobs:
         with:
           go-version: '>=1.18'
           check-latest: true
-      - name: Run go build
-        run: go build ./cmd/gokey
+      - name: Run go build for amd64
+        run: | 
+          go build -o gokey-amd64 ./cmd/gokey
+        env:
+          CGO_ENABLED: 0
+      - name: Run go build for arm64
+        run: | 
+          go build -o gokey-arm64 ./cmd/gokey
+        env:
+          CGO_ENABLED: 0
+          GOARCH: arm64
       - name: Upload Linux binary
         if: runner.os == 'Linux'
         run: |
-          mv gokey gokey-${{ github.ref_name }}-linux-amd64
-          gh release upload ${{ github.ref_name }} gokey-${{ github.ref_name }}-linux-amd64
+          mv gokey-amd64 gokey-${{ github.ref_name }}-linux-amd64
+          mv gokey-arm64 gokey-${{ github.ref_name }}-linux-arm64
+          gh release upload ${{ github.ref_name }} gokey-${{ github.ref_name }}-linux-amd64 gokey-arm64 gokey-${{ github.ref_name }}-linux-arm64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload Windows binary
         if: runner.os == 'Windows'
         run: |
-          mv gokey.exe gokey-${{ github.ref_name }}-windows-amd64.exe
-          gh release upload ${{ github.ref_name }} gokey-${{ github.ref_name }}-windows-amd64.exe
+          mv gokey-amd64 gokey-${{ github.ref_name }}-windows-amd64.exe
+          mv gokey-arm64 gokey-${{ github.ref_name }}-windows-arm64.exe
+          gh release upload ${{ github.ref_name }} gokey-${{ github.ref_name }}-windows-amd64.exe gokey-${{ github.ref_name }}-windows-arm64.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload MacOS binary
         if: runner.os == 'macOS'
         run: |
-          mv gokey gokey-${{ github.ref_name }}-darwin-amd64
-          gh release upload ${{ github.ref_name }} gokey-${{ github.ref_name }}-darwin-amd64
+          mv gokey-amd64 gokey-${{ github.ref_name }}-darwin-amd64
+          mv gokey-arm64 gokey-${{ github.ref_name }}-darwin-arm64
+          gh release upload ${{ github.ref_name }} gokey-${{ github.ref_name }}-darwin-amd64 gokey-${{ github.ref_name }}-darwin-arm64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
