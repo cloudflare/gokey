@@ -93,7 +93,7 @@ gokey -p super-secret-master-password -r example.com
 ```
 
 If you need a password for a different resource, (`example2.com`), you would
-change the real string
+change the realm string
 ```
 gokey -p super-secret-master-password -r example2.com
 ```
