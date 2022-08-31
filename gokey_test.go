@@ -94,8 +94,9 @@ func TestGetPass(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if strings.Compare(passWithEnv, passWithoutEnv) == 0 {
-		t.Fatal("pasword with env GOKEY_MASTER set  does not match user supplied password")
+	os.Unsetenv("GOKEY_MASTER")
+	if strings.Compare(passWithEnv, passWithoutEnv) != 0 {
+		t.Fatal("pasword with env GOKEY_MASTER set does not match user supplied password")
 	}
 
 }
