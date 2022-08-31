@@ -30,7 +30,6 @@ gokey -p super-secret-master-password -r example.com
   operation](#modes-of-operation) below, if no master password or master
   password file is provided, **gokey** will ask for it interactively) or master
   password can be specified by setting the GOKEY_MASTER environment variable.
-  Setting the GOKEY_MASTER will override -P and -p flags.
   - `-r <password/key realm>` - any string which identifies requested
   password/key, most likely key usage or resource URL
   - `-s <path to seed file>` - needed, if you want to use seed file instead of
