@@ -6,6 +6,7 @@ import (
 	"encoding/asn1"
 	"encoding/hex"
 	"encoding/pem"
+	"os"
 	"reflect"
 	"strings"
 	"testing"
@@ -82,6 +83,21 @@ func TestGetPass(t *testing.T) {
 	if (strings.Compare(pass1Example1, pass1Example1Retry) != 0) || (strings.Compare(pass1Example1Seed1, pass1Example1Seed1Retry) != 0) {
 		t.Fatal("passwords with same invocation options do not match")
 	}
+
+	// Testing GOKEY_MASTER environment variable
+	os.Setenv("GOKEY_MASTER", "pass1")
+	passWithEnv, err := GetPass(os.Getenv("GOKEY_MASTER"), "example.com", nil, passSpec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	passWithoutEnv, err := GetPass("pass1", "example.com", nil, passSpec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Compare(passWithEnv, passWithoutEnv) == 0 {
+		t.Fatal("pasword with env GOKEY_MASTER set  does not match user supplied password")
+	}
+
 }
 
 func keyToBytes(key crypto.PrivateKey, t *testing.T) []byte {
