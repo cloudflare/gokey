@@ -2,10 +2,7 @@ package rsa_test
 
 import (
 	"bytes"
-	"crypto/rsa"
 	"encoding/pem"
-	"io"
-	"runtime/debug"
 	"strings"
 	"testing"
 
@@ -132,70 +129,5 @@ func TestKnownKey(t *testing.T) {
 	rsa4096 := getKey(gokey.RSA4096, t)
 	if !pemEqual(rsa4096, knownRsa4096, t) {
 		t.Fatal("generated RSA 4096 does not match the expected result")
-	}
-}
-
-// reader which tries to negate the effect of crypto/internal/randutil/randutil.MaybeReadByte
-// https://github.com/golang/go/blob/6269dcdc24d74379d8a609ce886149811020b2cc/src/crypto/internal/randutil/randutil.go#L25
-// useful to regain deterministic output of some crypto routines with respect to a fixed pseudo-random stream
-// such as https://github.com/golang/go/blob/6269dcdc24d74379d8a609ce886149811020b2cc/src/crypto/rsa/rsa.go#L222
-type maybenotReader struct {
-	io.Reader
-	*testing.T
-}
-
-func (r maybenotReader) Read(p []byte) (n int, err error) {
-	if strings.Contains(string(debug.Stack()), "crypto/internal/randutil.MaybeReadByte") {
-		r.T.Log("mitigating crypto/internal/randutil.MaybeReadByte...")
-		// feed MaybeReadByte with dummy zeroes
-		for i := range p {
-			p[i] = 0
-		}
-		return len(p), nil
-	}
-
-	return r.Reader.Read(p)
-}
-
-// generate an RSA key using stdlib crypto/rsa package
-// but with crypto/internal/randutil.MaybeReadByte removed
-func getStdRsaKey(bits int, t *testing.T) string {
-	realm := "example.com"
-
-	// mimic gokey.GetKey behaviour
-	switch bits {
-	case 2048:
-		realm += "-key(RSA2048)"
-	case 4096:
-		realm += "-key(RSA4096)"
-	}
-
-	rng := &maybenotReader{gokey.NewDRNG("pass", realm), t}
-	priv, err := rsa.GenerateKey(rng, bits)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	var b strings.Builder
-	err = gokey.EncodeToPem(priv, &b)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	return b.String()
-}
-
-// this test is here to see if the RSA key generation algorithm in the stdlib is the same as in our package
-// for now we want to track any stdlib changes to the algorithm
-// however, this test might be removed in the future, if the changes in the stdlib will not be backwards compatible
-func TestStdKey(t *testing.T) {
-	rsa2048 := getStdRsaKey(2048, t)
-	if !pemEqual(rsa2048, knownRsa2048, t) {
-		t.Fatal("RSA key generation algorithm from stdlib deviates from the one in gokey")
-	}
-
-	rsa4096 := getStdRsaKey(4096, t)
-	if !pemEqual(rsa4096, knownRsa4096, t) {
-		t.Fatal("RSA key generation algorithm from stdlib deviates from the one in gokey")
 	}
 }
