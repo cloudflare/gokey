@@ -99,8 +99,7 @@ func (spec *PasswordSpec) Compliant(password string) bool {
 	return true
 }
 
-const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" //  Excluding the ugly`~!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?"
-// const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890`~!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?"
+const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890`~!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?"
 
 func randRange(rng io.Reader, max byte) (byte, error) {
 	var base [1]byte
