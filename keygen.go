@@ -2,13 +2,13 @@ package gokey
 
 import (
 	"crypto"
-	"crypto/ecdsa"
 	"crypto/elliptic"
 	"errors"
 	"io"
 	"strings"
 	"unicode"
 
+	deterministicEcdsaKeygen "github.com/cloudflare/gokey/ecdsa"
 	deterministicRsaKeygen "github.com/cloudflare/gokey/rsa"
 	"golang.org/x/crypto/ed25519"
 )
@@ -184,7 +184,7 @@ func (keygen *KeyGen) generateEc(kt KeyType) (crypto.PrivateKey, error) {
 		return nil, errors.New("invalid EC key size requested")
 	}
 
-	return ecdsa.GenerateKey(curve, keygen.rng)
+	return deterministicEcdsaKeygen.GenerateKey(curve, keygen.rng)
 }
 
 func (keygen *KeyGen) generate25519(kt KeyType) (crypto.PrivateKey, error) {
