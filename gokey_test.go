@@ -13,9 +13,7 @@ import (
 	"golang.org/x/crypto/ed25519"
 )
 
-var (
-	passSpec = &PasswordSpec{16, 3, 3, 2, 1, ""}
-)
+var passSpec = &PasswordSpec{16, 3, 3, 2, 1, ""}
 
 func TestGetPass(t *testing.T) {
 	pass1Seed1, err := GenerateEncryptedKeySeed("pass1")
@@ -163,13 +161,19 @@ func testGetKeyType(kt KeyType, t *testing.T) {
 }
 
 func TestGetKey(t *testing.T) {
-	testGetKeyType(EC256, t)
-	testGetKeyType(EC384, t)
-	testGetKeyType(EC521, t)
-	testGetKeyType(RSA2048, t)
-	testGetKeyType(RSA4096, t)
-	testGetKeyType(X25519, t)
-	testGetKeyType(ED25519, t)
+	for _, kt := range []KeyType{
+		EC256,
+		EC384,
+		EC521,
+		RSA2048,
+		RSA4096,
+		X25519,
+		ED25519,
+	} {
+		t.Run(kt.String(), func(t *testing.T) {
+			testGetKeyType(kt, t)
+		})
+	}
 }
 
 func TestGetKeyUnsafe(t *testing.T) {
