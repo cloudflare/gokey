@@ -11,7 +11,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/dannyfast/gokey"
+	"github.com/cloudflare/gokey"
 	"golang.org/x/term"
 )
 
