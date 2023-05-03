@@ -11,7 +11,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/dannyfast/gokey"
+	"github.com/cloudflare/gokey"
 	"golang.org/x/term"
 )
 
@@ -110,7 +110,7 @@ func logFatal(format string, args ...interface{}) {
 func main() {
 	flag.Parse()
 
-	if len(pass) == 0 {
+	if pass == "" {
 		pass = os.Getenv("GOKEY_MASTER")
 	}
 	var err error
