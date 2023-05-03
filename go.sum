@@ -1,5 +1,3 @@
-github.com/dannyfast/gokey v0.0.0-20220818173102-38fe03080e73 h1:qsFpxg7Rp7EF33gWy8ILhNEHGi2c4i6t6VzGfvk7r5Y=
-github.com/dannyfast/gokey v0.0.0-20220818173102-38fe03080e73/go.mod h1:f5WDGcWyZomINXtBBdU8wcGw0J4tVRKXcAJeCK3ycrw=
 golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d h1:sK3txAijHtOK88l68nt020reeT1ZdKLIYetKl95FzVY=
 golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
 golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2/go.mod h1:9nx3DQGgdP8bBQD5qxJ1jj9UTztislL4KSBs9R2vV5Y=
