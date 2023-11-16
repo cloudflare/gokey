@@ -155,7 +155,7 @@ func testGetKeyType(kt KeyType, t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if (!bytes.Equal(keyToBytes(key1Example1, t), keyToBytes(key1Example1Retry, t)) || !bytes.Equal(keyToBytes(key1Example1Seed1, t), keyToBytes(key1Example1Seed1Retry, t))) {
+	if !bytes.Equal(keyToBytes(key1Example1, t), keyToBytes(key1Example1Retry, t)) || !bytes.Equal(keyToBytes(key1Example1Seed1, t), keyToBytes(key1Example1Seed1Retry, t)) {
 		t.Fatal("keys with same invocation options do not match")
 	}
 }

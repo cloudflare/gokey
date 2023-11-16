@@ -141,7 +141,7 @@ func TestEncryptedSeed(t *testing.T) {
 	}
 
 	// rest should have been encrypted
-	if bytes.Equal(uSeed[12 : len(uSeed)-16], seed[12 : len(seed)-16]) {
+	if bytes.Equal(uSeed[12:len(uSeed)-16], seed[12:len(seed)-16]) {
 		t.Fatal("seed was not properly encrypted")
 	}
 }
