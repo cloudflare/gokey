@@ -119,11 +119,11 @@ func testGetKeyType(kt KeyType, t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if bytes.Compare(keyToBytes(key1Example1, t), keyToBytes(key1Example2, t)) == 0 {
+	if bytes.Equal(keyToBytes(key1Example1, t), keyToBytes(key1Example2, t)) {
 		t.Fatal("keys match for different realms")
 	}
 
-	if bytes.Compare(keyToBytes(key1Example1, t), keyToBytes(key2Example1, t)) == 0 {
+	if bytes.Equal(keyToBytes(key1Example1, t), keyToBytes(key2Example1, t)) {
 		t.Fatal("keys match for different master passwords")
 	}
 
@@ -137,11 +137,11 @@ func testGetKeyType(kt KeyType, t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if bytes.Compare(keyToBytes(key1Example1, t), keyToBytes(key1Example1Seed1, t)) == 0 {
+	if bytes.Equal(keyToBytes(key1Example1, t), keyToBytes(key1Example1Seed1, t)) {
 		t.Fatal("keys match for seeded and non-seeded master password")
 	}
 
-	if bytes.Compare(keyToBytes(key1Example1Seed1, t), keyToBytes(key1Example1Seed2, t)) == 0 {
+	if bytes.Equal(keyToBytes(key1Example1Seed1, t), keyToBytes(key1Example1Seed2, t)) {
 		t.Fatal("keys match for different seeds")
 	}
 
@@ -155,7 +155,7 @@ func testGetKeyType(kt KeyType, t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if (bytes.Compare(keyToBytes(key1Example1, t), keyToBytes(key1Example1Retry, t)) != 0) || (bytes.Compare(keyToBytes(key1Example1Seed1, t), keyToBytes(key1Example1Seed1Retry, t)) != 0) {
+	if !bytes.Equal(keyToBytes(key1Example1, t), keyToBytes(key1Example1Retry, t)) || !bytes.Equal(keyToBytes(key1Example1Seed1, t), keyToBytes(key1Example1Seed1Retry, t)) {
 		t.Fatal("keys with same invocation options do not match")
 	}
 }
