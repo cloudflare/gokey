@@ -110,6 +110,9 @@ func logFatal(format string, args ...interface{}) {
 func main() {
 	flag.Parse()
 
+	if pass == "" {
+		pass = os.Getenv("GOKEY_MASTER")
+	}
 	var err error
 	if pass == "" && passFile != "" {
 		var content []byte
