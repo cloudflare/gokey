@@ -28,7 +28,7 @@ func TestDRNG(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		if bytes.Compare(stream1, stream2) == 0 {
+		if bytes.Equal(stream1, stream2) {
 			t.Fatal("generated streams match")
 		}
 	}
@@ -38,7 +38,7 @@ func TestDRNG(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if bytes.Compare(stream1, stream2) != 0 {
+	if !bytes.Equal(stream1, stream2) {
 		t.Fatal("generated streams do not match")
 	}
 }
@@ -96,7 +96,7 @@ func TestDRNGwithSeed(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		if bytes.Compare(stream1, stream2) == 0 {
+		if bytes.Equal(stream1, stream2) {
 			t.Fatal("generated streams match")
 		}
 	}
@@ -106,7 +106,7 @@ func TestDRNGwithSeed(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if bytes.Compare(stream1, stream2) != 0 {
+	if !bytes.Equal(stream1, stream2) {
 		t.Fatal("generated streams do not match")
 	}
 }
@@ -132,16 +132,16 @@ func TestEncryptedSeed(t *testing.T) {
 		t.Fatal("unwrapped seed is shorter than encrypted seed")
 	}
 
-	if bytes.Compare(uSeed[:12], seed[:12]) != 0 {
+	if !bytes.Equal(uSeed[:12], seed[:12]) {
 		t.Fatal("no nonce in unwrapped seed")
 	}
 
-	if bytes.Compare(uSeed[len(uSeed)-16:], seed[len(seed)-16:]) != 0 {
+	if !bytes.Equal(uSeed[len(uSeed)-16:], seed[len(seed)-16:]) {
 		t.Fatal("no auth tag in unwrapped seed")
 	}
 
 	// rest should have been encrypted
-	if bytes.Compare(uSeed[12:len(uSeed)-16], seed[12:len(seed)-16]) == 0 {
+	if bytes.Equal(uSeed[12:len(uSeed)-16], seed[12:len(seed)-16]) {
 		t.Fatal("seed was not properly encrypted")
 	}
 }
