@@ -21,7 +21,7 @@ var (
 	seedSkipCount, length                            int
 )
 
-func init() {
+func initFlags() {
 	flag.StringVar(&pass, "p", "", "master password (if not specified, will be asked interactively)")
 	flag.StringVar(&passFile, "P", "", "master password file (if not specified, will be asked interactively)")
 	flag.StringVar(&keyType, "t", "pass", "output type (can be pass, seed, raw, ec256, ec384, ec521, rsa2048, rsa4096, x25519, ed25519)")
@@ -108,6 +108,7 @@ func logFatal(format string, args ...interface{}) {
 }
 
 func Main() {
+	initFlags()
 	flag.Parse()
 
 	var err error
