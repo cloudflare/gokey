@@ -27,4 +27,22 @@ jobs:
       - name: Run go test
         run: go test ./...
       - name: Run go build
-        run: go build ./cmd/gokey
+        run: go build -o gokey ./cmd/gokey
+      - name: Command line password is preferred to a password file
+        if: runner.os == 'Linux'
+        run: |
+          echo -n wrong > /tmp/pass
+          [ $(./gokey -p hunter2 -P /tmp/pass -r test) == 'X"fZba:0S>' ]
+      - name: Password file is preferred to the environment variable
+        if: runner.os == 'Linux'
+        run: |
+          echo -n hunter2 > /tmp/pass
+          [ $(./gokey -P /tmp/pass -r test) == 'X"fZba:0S>' ]
+        env:
+          GOKEY_ROOT_PASS: wrong
+      - name: Set password through the environment variable
+        if: runner.os == 'Linux'
+        run: |
+          [ $(./gokey -r test) == 'X"fZba:0S>' ]
+        env:
+          GOKEY_ROOT_PASS: hunter2
