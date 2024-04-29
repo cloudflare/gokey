@@ -121,6 +121,9 @@ func Main() {
 		pass = strings.TrimSpace(string(content[:]))
 	}
 	if pass == "" {
+		pass = os.Getenv("GOKEY_ROOT_PASS")
+	}
+	if pass == "" {
 		var passBytes []byte
 		var passBytesAgain []byte
 		for {
