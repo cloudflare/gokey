@@ -13,18 +13,18 @@ jobs:
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.os }} - go${{ matrix.go }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
         with:
-          go-version: '>=1.18'
+          go-version: 'stable'
           check-latest: true
       - name: Run go build for amd64
-        run: | 
+        run: |
           go build -o gokey-amd64 ./cmd/gokey
         env:
           CGO_ENABLED: 0
       - name: Run go build for arm64
-        run: | 
+        run: |
           go build -o gokey-arm64 ./cmd/gokey
         env:
           CGO_ENABLED: 0
