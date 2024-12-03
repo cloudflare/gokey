@@ -16,15 +16,16 @@ import (
 )
 
 var (
-	pass, passFile, keyType, seedPath, realm, output string
-	unsafe                                           bool
-	seedSkipCount, length                            int
+	pass, passFile, keyType, formatType, seedPath, realm, output string
+	unsafe                                                       bool
+	seedSkipCount, length                                        int
 )
 
 func initFlags() {
 	flag.StringVar(&pass, "p", "", "master password (if not specified, will be asked interactively)")
 	flag.StringVar(&passFile, "P", "", "master password file (if not specified, will be asked interactively)")
 	flag.StringVar(&keyType, "t", "pass", "output type (can be pass, seed, raw, ec256, ec384, ec521, rsa2048, rsa4096, x25519, ed25519)")
+	flag.StringVar(&formatType, "f", "pem", "key output format (can be pem, openssh)")
 	flag.StringVar(&seedPath, "s", "", "path to master seed file (optional)")
 	flag.IntVar(&seedSkipCount, "skip", 0, "number of bytes to skip from master seed file (default 0)")
 	flag.StringVar(&realm, "r", "", "password/key realm (most probably purpose of the password/key)")
@@ -73,7 +74,14 @@ func genKey(seed []byte, w io.Writer) {
 		log.Fatalln(err)
 	}
 
-	err = gokey.EncodeToPem(key, w)
+	switch formatType {
+	case "pem":
+		err = gokey.EncodeToPem(key, w)
+	case "openssh":
+		err = gokey.EncodeToSsh(key, w)
+	default:
+		err = fmt.Errorf("unknown format type %q", formatType)
+	}
 	if err != nil {
 		log.Fatalln(err)
 	}
