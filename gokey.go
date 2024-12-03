@@ -13,6 +13,7 @@ import (
 	"io"
 
 	"golang.org/x/crypto/ed25519"
+	"golang.org/x/crypto/ssh"
 )
 
 func getReader(password, realm string, seed []byte, allowUnsafe bool) (io.Reader, error) {
@@ -137,4 +138,12 @@ func EncodeToPem(key crypto.PrivateKey, w io.Writer) error {
 	}
 
 	return fmt.Errorf("unable to encode key type %T", key)
+}
+
+func EncodeToSsh(key crypto.PrivateKey, w io.Writer) error {
+	block, err := ssh.MarshalPrivateKey(key, "")
+	if err != nil {
+		return fmt.Errorf("unable to encode key type %T as ssh: %w", key, err)
+	}
+	return pem.Encode(w, block)
 }

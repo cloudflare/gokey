@@ -176,6 +176,31 @@ func TestGetKey(t *testing.T) {
 	}
 }
 
+func TestGetSshKey(t *testing.T) {
+	for _, kt := range []KeyType{
+		EC256,
+		EC384,
+		EC521,
+		RSA2048,
+		RSA4096,
+		// X25519, // not supported by ssh
+		ED25519,
+	} {
+		t.Run(kt.String(), func(t *testing.T) {
+			// Due to random check bytes in the ssh key format, we can't check for stability of the output, but we can at least check that we get output.
+			key, err := GetKey("pass1", "example.com", nil, kt, true)
+			if err != nil {
+				t.Fatal(err)
+			}
+			buf := bytes.NewBuffer(nil)
+			err = EncodeToSsh(key, buf)
+			if err != nil {
+				t.Fatal(err)
+			}
+		})
+	}
+}
+
 func TestGetKeyUnsafe(t *testing.T) {
 	_, err := GetKey("pass1", "example.com", nil, EC256, false)
 	if err == nil {
