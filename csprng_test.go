@@ -140,6 +140,10 @@ func TestEncryptedSeed(t *testing.T) {
 		t.Fatal("no auth tag in unwrapped seed")
 	}
 
+	if bytes.Equal(uSeed[12:len(uSeed)-16], make([]byte, len(uSeed[12:len(uSeed)-16]))) {
+		t.Fatal("decrypted seed is all zeroes")
+	}
+
 	// rest should have been encrypted
 	if bytes.Equal(uSeed[12:len(uSeed)-16], seed[12:len(seed)-16]) {
 		t.Fatal("seed was not properly encrypted")
