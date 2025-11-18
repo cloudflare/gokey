@@ -101,7 +101,7 @@ func unwrapSeed(password string, seed []byte) ([]byte, error) {
 	}
 
 	pt := make([]byte, len(seed))
-	_, err = gcm.Open(pt[12:], seed[:12], seed[12:], nil)
+	_, err = gcm.Open(pt[12:][:0], seed[:12], seed[12:], nil)
 	if err != nil {
 		return nil, err
 	}
