@@ -13,6 +13,7 @@ import (
 
 const (
 	keySeedLength = 256
+	PBKDF2Iterations = 600_000
 )
 
 type devZero struct{}
@@ -25,7 +26,7 @@ func (dz devZero) Read(p []byte) (n int, err error) {
 }
 
 func passKey(password, realm string) []byte {
-	return pbkdf2.Key([]byte(password), []byte(realm), 4096, 32, sha256.New)
+	return pbkdf2.Key([]byte(password), []byte(realm), PBKDF2Iterations, 32, sha256.New)
 }
 
 func NewDRNG(password, realm string) io.Reader {
